@@ -14,7 +14,7 @@ import (
 
 	"log"
 
-	"github.com/infobloxopen/protoc-gen-gorm/options"
+	gorm "github.com/smyrgl/protoc-gen-gorm/options"
 )
 
 const (
@@ -98,17 +98,17 @@ type OrmPlugin struct {
 	ormableTypes    map[string]*OrmableType
 	EmptyFiles      []string
 	currentPackage  string
-	currentFile     *generator.FileDescriptor
-	fileImports     map[*generator.FileDescriptor]*fileImports
+	currentFile     *descriptor.FileDescriptorProto
+	fileImports     map[*descriptor.FileDescriptorProto]*fileImports
 	messages        map[string]struct{}
 	ormableServices []autogenService
 	suppressWarn    bool
 }
 
-func (p *OrmPlugin) setFile(file *generator.FileDescriptor) {
+func (p *OrmPlugin) setFile(file *descriptor.FileDescriptorProto) {
 	p.currentFile = file
 	p.currentPackage = file.GetPackage()
-	p.Generator.SetFile(file.FileDescriptorProto)
+	p.SetFile(file.GetName())
 }
 
 // Name identifies the plugin
@@ -120,7 +120,7 @@ func (p *OrmPlugin) Name() string {
 // code generation begins.
 func (p *OrmPlugin) Init(g *generator.Generator) {
 	p.Generator = g
-	p.fileImports = make(map[*generator.FileDescriptor]*fileImports)
+	p.fileImports = make(map[*descriptor.FileDescriptorProto]*fileImports)
 	p.messages = make(map[string]struct{})
 	if strings.EqualFold(g.Param["engine"], "postgres") {
 		p.dbEngine = ENGINE_POSTGRES
@@ -146,9 +146,8 @@ func (p *OrmPlugin) Generate(file *generator.FileDescriptor) {
 	if p.ormableTypes == nil {
 		p.ormableTypes = make(map[string]*OrmableType)
 		for _, fileProto := range p.AllFiles().GetFile() {
-			file := p.FileOf(fileProto)
-			p.fileImports[file] = newFileImports()
-			p.setFile(file)
+			p.fileImports[file.FileDescriptorProto] = newFileImports()
+			p.setFile(file.FileDescriptorProto)
 			// Preload just the types we'll be creating
 			for _, msg := range file.Messages() {
 				// We don't want to bother with the MapEntry stuff
@@ -184,13 +183,12 @@ func (p *OrmPlugin) Generate(file *generator.FileDescriptor) {
 			}
 		}
 		for _, fileProto := range p.AllFiles().GetFile() {
-			file := p.FileOf(fileProto)
-			p.setFile(file)
-			p.parseServices(file)
+			p.setFile(fileProto)
+			p.parseServices(fileProto)
 		}
 	}
 	// Return to the file at hand and then generate anything needed
-	p.setFile(file)
+	p.setFile(file.FileDescriptorProto)
 	empty := true
 	for _, msg := range file.Messages() {
 		typeName := p.getMsgName(msg)
@@ -203,7 +201,7 @@ func (p *OrmPlugin) Generate(file *generator.FileDescriptor) {
 		}
 	}
 	p.generateDefaultHandlers(file)
-	p.generateDefaultServer(file)
+	p.generateDefaultServer(file.FileDescriptorProto)
 	// no ormable objects, and no imports (means no services generated)
 	if empty && len(p.GetFileImports().packages) == 0 {
 		p.EmptyFiles = append(p.EmptyFiles, file.GetName())

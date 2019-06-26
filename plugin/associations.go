@@ -8,7 +8,7 @@ import (
 	jgorm "github.com/jinzhu/gorm"
 	"github.com/jinzhu/inflection"
 
-	gorm "github.com/infobloxopen/protoc-gen-gorm/options"
+	gorm "github.com/smyrgl/protoc-gen-gorm/options"
 )
 
 func (p *OrmPlugin) parseAssociations(msg *generator.Descriptor) {
@@ -104,7 +104,7 @@ func (p *OrmPlugin) countManyToManyAssociationDimension(msg *generator.Descripto
 
 func (p *OrmPlugin) resolveAliasName(goType, goPackage string, file *generator.FileDescriptor) string {
 	originFile := p.currentFile
-	p.setFile(file)
+	p.setFile(file.FileDescriptorProto)
 	isPointer := strings.HasPrefix(goType, "*")
 	typeParts := strings.Split(goType, ".")
 	if len(typeParts) == 2 {

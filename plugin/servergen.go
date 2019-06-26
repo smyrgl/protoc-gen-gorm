@@ -21,7 +21,7 @@ const (
 type autogenService struct {
 	*descriptor.ServiceDescriptorProto
 	ccName            string
-	file              *generator.FileDescriptor
+	file              *descriptor.FileDescriptorProto
 	usesTxnMiddleware bool
 	methods           []autogenMethod
 	autogen           bool
@@ -38,7 +38,7 @@ type autogenMethod struct {
 	fieldMaskName     string
 }
 
-func (p *OrmPlugin) parseServices(file *generator.FileDescriptor) {
+func (p *OrmPlugin) parseServices(file *descriptor.FileDescriptorProto) {
 	defaultSuppressWarn := p.suppressWarn
 	for _, service := range file.GetService() {
 		genSvc := autogenService{
@@ -97,7 +97,7 @@ func (p *OrmPlugin) parseServices(file *generator.FileDescriptor) {
 	}
 }
 
-func (p *OrmPlugin) generateDefaultServer(file *generator.FileDescriptor) {
+func (p *OrmPlugin) generateDefaultServer(file *descriptor.FileDescriptorProto) {
 	for _, service := range p.ormableServices {
 		if service.file != file || !service.autogen {
 			continue

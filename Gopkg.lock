@@ -18,7 +18,7 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:6926fef5e923c47b28c3935cc071b8a5f53abf81bb1c66899d65a705f5220388"
+  digest = "1:85948b2e061b7bd5706e93cd5cadec11bdaaad6bd28c66f52287c2e7fa59dcb1"
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -41,14 +41,15 @@
     "proto",
     "protoc-gen-gogo/descriptor",
     "protoc-gen-gogo/generator",
+    "protoc-gen-gogo/generator/internal/remap",
     "protoc-gen-gogo/grpc",
     "protoc-gen-gogo/plugin",
     "vanity",
     "vanity/command",
   ]
   pruneopts = "UT"
-  revision = "1adfc126b41513cc696b209667c8656ea7aac67c"
-  version = "v1.0.0"
+  revision = "ba06b47c162d49f2af050fb4c75bcbc86a159d5c"
+  version = "v1.2.1"
 
 [[projects]]
   branch = "master"
@@ -60,9 +61,10 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:cf870477973b86f57a66cb02b63a7e0369cbff0fca7740076da53ee15c35e6b3"
+  digest = "1:f8e1ddd1260a452328c1a8fa217f226d455cd2c0fb16ba4900eb19c0f64b8e9f"
   name = "github.com/golang/protobuf"
   packages = [
+    "descriptor",
     "jsonpb",
     "proto",
     "protoc-gen-go/descriptor",
@@ -95,10 +97,11 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:7bd43be58eca0c23d4ad1c157a27840e4b9c1ee30b40879078c04ce5b1095fc0"
+  digest = "1:77eae3dfdba94db4059e16a0c38b5158fdeba3a69ef705107e79d4466d4ca3ad"
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = [
     "codegenerator",
+    "internal",
     "protoc-gen-grpc-gateway/descriptor",
     "protoc-gen-grpc-gateway/generator",
     "protoc-gen-grpc-gateway/httprule",
@@ -106,12 +109,11 @@
     "protoc-gen-swagger/genswagger",
     "protoc-gen-swagger/options",
     "runtime",
-    "runtime/internal",
     "utilities",
   ]
   pruneopts = "UT"
-  revision = "92583770e3f01b09a0d3e9bdf64321d8bebd48f2"
-  version = "v1.4.1"
+  revision = "cd0c8ef3533e9c04e6520cac37a81fe262fb0b34"
+  version = "v1.9.2"
 
 [[projects]]
   branch = "master"
@@ -133,15 +135,15 @@
   revision = "534a084bf6faeb9f286df0ba98cd9ff73bbc8786"
 
 [[projects]]
-  digest = "1:6895fbe5a10c5aebd1965cac6f6905dcdb21bee01e08912d3ba6a805c2485f6a"
+  digest = "1:c1a831110975734d22f89140e720da0bb5575b2516b37b2f242a5ea5e3e1e563"
   name = "github.com/jinzhu/gorm"
   packages = [
     ".",
     "dialects/postgres",
   ]
   pruneopts = "UT"
-  revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
-  version = "v1.9.1"
+  revision = "01b66011427614f01e84a473b0303c917179f2a0"
+  version = "v1.9.9"
 
 [[projects]]
   branch = "master"
@@ -247,10 +249,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9109b88b4156765a10ea3583857f187ffbea70d1068f3ab5dcd33a4c0fa152ce"
+  digest = "1:cc127862a6d178c136ccb0b81e1661f431f4d0b3ed759d910443fef87535e6da"
   name = "google.golang.org/genproto"
   packages = [
     "googleapis/api/annotations",
+    "googleapis/api/httpbody",
     "googleapis/rpc/code",
     "googleapis/rpc/status",
     "protobuf/field_mask",
@@ -259,7 +262,7 @@
   revision = "e92b116572682a5b432ddd840aeaba2a559eeff1"
 
 [[projects]]
-  digest = "1:9ab5a33d8cb5c120602a34d2e985ce17956a4e8c2edce7e6961568f95e40c09a"
+  digest = "1:e8800ddadd6bce3bc0c5ffd7bc55dbdddc6e750956c10cc10271cade542fccbe"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -276,6 +279,7 @@
     "grpclog",
     "internal",
     "internal/backoff",
+    "internal/balancerload",
     "internal/binarylog",
     "internal/channelz",
     "internal/envconfig",
@@ -295,8 +299,8 @@
     "tap",
   ]
   pruneopts = "UT"
-  revision = "a02b0774206b209466313a0b525d2c738fe407eb"
-  version = "v1.18.0"
+  revision = "501c41df7f472c740d0674ff27122f3f48c80ce7"
+  version = "v1.21.1"
 
 [[projects]]
   digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"

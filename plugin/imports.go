@@ -13,9 +13,9 @@ import (
 // Imports that are added by default but unneeded in GORM code
 var unneededImports = []string{
 	"import proto \"github.com/gogo/protobuf/proto\"\n",
-	"import _ \"github.com/infobloxopen/protoc-gen-gorm/options\"\n",
+	"import _ \"github.com/smyrgl/protoc-gen-gorm/options\"\n",
 	// if needed will be imported with an alias
-	"import _ \"github.com/infobloxopen/protoc-gen-gorm/types\"\n",
+	"import _ \"github.com/smyrgl/protoc-gen-gorm/types\"\n",
 	"var _ = proto.Marshal\n",
 }
 
@@ -40,7 +40,7 @@ var (
 	uuidImport     = "github.com/satori/go.uuid"
 	authImport     = "github.com/infobloxopen/atlas-app-toolkit/auth"
 	gormpqImport   = "github.com/jinzhu/gorm/dialects/postgres"
-	gtypesImport   = "github.com/infobloxopen/protoc-gen-gorm/types"
+	gtypesImport   = "github.com/smyrgl/protoc-gen-gorm/types"
 	ptypesImport   = "github.com/golang/protobuf/ptypes"
 	wktImport      = "github.com/golang/protobuf/ptypes/wrappers"
 	resourceImport = "github.com/infobloxopen/atlas-app-toolkit/gorm/resource"
@@ -48,7 +48,7 @@ var (
 	queryImport    = "github.com/infobloxopen/atlas-app-toolkit/query"
 	gatewayImport  = "github.com/infobloxopen/atlas-app-toolkit/gateway"
 	pqImport       = "github.com/lib/pq"
-	gerrorsImport  = "github.com/infobloxopen/protoc-gen-gorm/errors"
+	gerrorsImport  = "github.com/smyrgl/protoc-gen-gorm/errors"
 )
 
 type pkgImport struct {
@@ -100,14 +100,14 @@ func (p *OrmPlugin) GetFileImports() *fileImports {
 
 // GenerateImports writes out required imports for the generated files
 func (p *OrmPlugin) GenerateImports(file *generator.FileDescriptor) {
-	imports := p.fileImports[file]
+	imports := p.fileImports[file.FileDescriptorProto]
 	for _, typeName := range imports.typesToRegister {
 		p.RecordTypeUse(typeName)
 	}
 	githubImports := imports.packages
 	sort.Strings(imports.stdImports)
 	for _, dep := range imports.stdImports {
-		p.PrintImport(dep, dep)
+		p.PrintImport(generator.GoPackageName(dep), generator.GoImportPath(dep))
 	}
 	p.P()
 	aliases := []string{}
@@ -116,7 +116,7 @@ func (p *OrmPlugin) GenerateImports(file *generator.FileDescriptor) {
 	}
 	sort.Strings(aliases)
 	for _, a := range aliases {
-		p.PrintImport(a, githubImports[a].packagePath)
+		p.PrintImport(generator.GoPackageName(a), generator.GoImportPath(githubImports[a].packagePath))
 	}
 	p.P()
 }
