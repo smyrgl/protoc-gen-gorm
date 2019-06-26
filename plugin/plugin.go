@@ -99,7 +99,7 @@ type OrmPlugin struct {
 	EmptyFiles      []string
 	currentPackage  string
 	currentFile     *descriptor.FileDescriptorProto
-	fileImports     map[*descriptor.FileDescriptorProto]*fileImports
+	fileImports     map[string]*fileImports
 	messages        map[string]struct{}
 	ormableServices []autogenService
 	suppressWarn    bool
@@ -120,7 +120,7 @@ func (p *OrmPlugin) Name() string {
 // code generation begins.
 func (p *OrmPlugin) Init(g *generator.Generator) {
 	p.Generator = g
-	p.fileImports = make(map[*descriptor.FileDescriptorProto]*fileImports)
+	p.fileImports = make(map[string]*fileImports)
 	p.messages = make(map[string]struct{})
 	if strings.EqualFold(g.Param["engine"], "postgres") {
 		p.dbEngine = ENGINE_POSTGRES
@@ -146,7 +146,7 @@ func (p *OrmPlugin) Generate(file *generator.FileDescriptor) {
 	if p.ormableTypes == nil {
 		p.ormableTypes = make(map[string]*OrmableType)
 		for _, fileProto := range p.AllFiles().GetFile() {
-			p.fileImports[file.FileDescriptorProto] = newFileImports()
+			p.fileImports[file.FileDescriptorProto.GetName()] = newFileImports()
 			p.setFile(file.FileDescriptorProto)
 			// Preload just the types we'll be creating
 			for _, msg := range file.Messages() {

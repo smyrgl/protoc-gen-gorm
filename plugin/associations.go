@@ -390,7 +390,7 @@ func (p *OrmPlugin) hasPrimaryKey(ormable *OrmableType) bool {
 			return true
 		}
 	}
-	for fieldName, _ := range ormable.Fields {
+	for fieldName := range ormable.Fields {
 		if strings.ToLower(fieldName) == "id" {
 			return true
 		}

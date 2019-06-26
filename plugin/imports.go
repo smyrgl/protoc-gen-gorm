@@ -95,12 +95,12 @@ func newFileImports() *fileImports {
 }
 
 func (p *OrmPlugin) GetFileImports() *fileImports {
-	return p.fileImports[p.currentFile]
+	return p.fileImports[p.currentFile.GetName()]
 }
 
 // GenerateImports writes out required imports for the generated files
 func (p *OrmPlugin) GenerateImports(file *generator.FileDescriptor) {
-	imports := p.fileImports[file.FileDescriptorProto]
+	imports := p.fileImports[file.FileDescriptorProto.GetName()]
 	for _, typeName := range imports.typesToRegister {
 		p.RecordTypeUse(typeName)
 	}
